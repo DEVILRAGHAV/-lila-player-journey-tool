@@ -64,25 +64,21 @@ async function init() {
     return;
   }
 
-  await preloadImages();
   populateMapSelect();
   wireEvents();
   onFiltersChanged();
 }
 
-function preloadImages() {
-  const maps = DATA.maps && DATA.maps.length ? DATA.maps : Object.keys(MAP_IMAGES);
-  const promises = maps.map((mapId) => {
-    return new Promise((resolve) => {
-      const src = MAP_IMAGES[mapId];
-      if (!src) { resolve(); return; }
-      const img = new Image();
-      img.onload = () => { mapImages[mapId] = img; resolve(); };
-      img.onerror = () => { resolve(); }; // still proceed without the image
-      img.src = src;
-    });
-  });
-  return Promise.all(promises);
+// Loads one map's image on demand (only when actually needed) and caches it.
+// Calling this repeatedly for an already-loaded map resolves immediately.
+function ensureMapImage(mapId, onReady) {
+  if (mapImages[mapId]) { onReady(mapImages[mapId]); return; }
+  const src = MAP_IMAGES[mapId];
+  if (!src) { onReady(null); return; }
+  const img = new Image();
+  img.onload = () => { mapImages[mapId] = img; onReady(img); };
+  img.onerror = () => { onReady(null); };
+  img.src = src;
 }
 
 function populateMapSelect() {
@@ -333,7 +329,18 @@ function clearCanvas() {
 function drawBackground(mapId) {
   clearCanvas();
   const img = mapImages[mapId];
-  if (img) ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  if (img) {
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    return;
+  }
+  // Not loaded yet: show a lightweight loading state and fetch it now.
+  ctx.fillStyle = "#9a9ea6";
+  ctx.font = "20px -apple-system, Segoe UI, Roboto, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("Loading map image…", canvas.width / 2, canvas.height / 2);
+  ensureMapImage(mapId, () => {
+    renderCurrentFrame(); // re-render now that the image is cached
+  });
 }
 
 function drawMatchPaths(match, uptoTs) {
