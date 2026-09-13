@@ -1,0 +1,11 @@
+# Raw input data - large, not needed in the repo (only data.json + minimaps are used by the site)
+player_data/
+player_data.zip
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db

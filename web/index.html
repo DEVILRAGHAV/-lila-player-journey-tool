@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LILA BLACK — Player Journey Explorer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>LILA BLACK · Player Journey Explorer</h1>
+
+  <div class="control">
+    <label>Map</label>
+    <select id="mapSelect"></select>
+  </div>
+  <div class="control">
+    <label>Date</label>
+    <select id="dateSelect"></select>
+  </div>
+  <div class="control">
+    <label>Match</label>
+    <select id="matchSelect"></select>
+  </div>
+  <div class="control">
+    <label>View</label>
+    <div>
+      <button id="btnPaths" class="active">Snapshot Playback</button>
+      <button id="btnHeatTraffic">Traffic Heatmap</button>
+      <button id="btnHeatKills">Kill Heatmap</button>
+      <button id="btnHeatDeaths">Death Heatmap</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="mapWrap">
+    <canvas id="mapCanvas" width="1024" height="1024"></canvas>
+    <div id="emptyState" style="display:none;"></div>
+    <div id="tooltip" style="display:none;"></div>
+  </div>
+
+  <div id="sidebar">
+    <div class="panel">
+      <h3>Legend</h3>
+      <div class="legend-item"><span class="swatch" style="background:#3b9eff"></span> Human path</div>
+      <div class="legend-item"><span class="swatch" style="background:#ff9d3b"></span> Bot path</div>
+      <div class="legend-item"><span class="swatch" style="background:#ffd23b;border-radius:50%"></span> Kill (human)</div>
+      <div class="legend-item"><span class="swatch" style="background:#ff3b5c;border-radius:50%"></span> Killed (human)</div>
+      <div class="legend-item"><span class="swatch" style="background:#ff9d3b;border-radius:50%"></span> Bot kill / killed</div>
+      <div class="legend-item"><span class="swatch" style="background:#a15bff;border-radius:0"></span> Killed by storm</div>
+      <div class="legend-item"><span class="swatch" style="background:#3bffb0;border-radius:0"></span> Loot pickup</div>
+    </div>
+
+    <div class="panel">
+      <h3>Match info</h3>
+      <div id="matchMeta">Select a match to begin.</div>
+    </div>
+
+    <div class="panel">
+      <h3>Players <span style="font-weight:400;text-transform:none;color:#6a6e76;">(click to isolate)</span></h3>
+      <div id="playerList"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Filtered insights</h3>
+      <div id="statsPanel">—</div>
+    </div>
+  </div>
+</main>
+
+<div id="timelineRow">
+  <button id="btnPlay">▶ Play</button>
+  <span style="color:#6a6e76;font-size:12px;">Recorded window:</span>
+  <input type="range" id="timelineSlider" min="0" max="1000" value="1000">
+  <span id="timeLabel">--:-- / --:--</span>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
