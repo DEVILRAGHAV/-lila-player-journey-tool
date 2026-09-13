@@ -95,11 +95,27 @@ project → GitHub → select this repo**, with:
 
 Netlify auto-redeploys on every push to `main`.
 
-## Known limitation
+## Known limitations
 
-`web/data.json` is about 8.4MB (the full flattened dataset). On a slow
-mobile connection, the map/date/match dropdowns may take a few extra
-seconds to populate on first load while it downloads — this is a one-time
-fetch, cached by the browser afterward. Minimap images are loaded lazily
-per-map (only the selected map downloads), so this delay is isolated to
-that single JSON fetch.
+1. **`web/data.json` is about 8.4MB** (the full flattened dataset). On a
+   slow mobile connection, the map/date/match dropdowns may take a few
+   extra seconds to populate on first load while it downloads — this is a
+   one-time fetch, cached by the browser afterward. Minimap images are
+   loaded lazily per-map (only the selected map downloads), so this delay
+   is isolated to that single JSON fetch.
+
+2. **Play can finish almost instantly on very short snapshots.** As
+   explained in `ARCHITECTURE.md`, each recorded match window is often
+   under 1-2 seconds of match-relative time. Hitting Play on one of these
+   will play through and stop almost immediately — that's expected, not
+   broken. The timeline slider lets you scrub frame-by-frame through that
+   short window instead, which is the more useful way to inspect a brief
+   snapshot closely.
+
+3. **"All maps" + a heatmap view picks one map arbitrarily.** Selecting
+   "All maps" in the Map filter and then any heatmap mode doesn't error,
+   but currently just renders on top of whichever map the first match in
+   the filtered list happens to use, without indicating which one was
+   picked. Heatmaps are more meaningful scoped to a single selected map;
+   this combination is a known rough edge rather than a data or rendering
+   bug.
