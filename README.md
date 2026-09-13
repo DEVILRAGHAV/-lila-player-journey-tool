@@ -9,6 +9,33 @@ playback, and traffic/kill/death heatmaps.
 See `ARCHITECTURE.md` for how it's built and why, and `INSIGHTS.md` for
 data-backed findings from the dataset.
 
+## Feature walkthrough
+
+- **Map / Date / Match filters** — three dropdowns at the top narrow the
+  data down to a specific map, day, and match. Date and Match options
+  update automatically based on the current Map selection.
+- **Snapshot Playback** (default view) — draws every player's recorded path
+  on the minimap: a solid blue line for humans, a dashed orange line for
+  bots. Kill, Death (by human/bot), Storm Death, and Loot events are marked
+  with distinct colored shapes along the path (see the Legend panel).
+- **Timeline scrubber + Play/Pause** — drag the slider or hit Play to watch
+  a match's recorded window unfold event-by-event, rather than seeing the
+  whole path at once.
+- **Players panel (click to isolate)** — click any player in the sidebar
+  list to dim every other player and highlight just theirs; click again
+  (or "Show all players") to reset. Useful for following one person's
+  journey in a crowded match.
+- **Hover tooltips** — hovering over any dot or event marker on the map
+  shows exactly who it is and the timestamp, without needing to guess from
+  color alone.
+- **Traffic / Kill / Death Heatmaps** — three toggle buttons switch from
+  individual paths to an aggregated density view across every match in the
+  current Map/Date filter, showing where players travel, where kills
+  happen, and where deaths happen, as separate overlays.
+- **Filtered insights panel** — updates live as you change Map/Date
+  filters: average kills and loot per match, and a breakdown of what's
+  actually killing human players (other humans vs bots vs the storm).
+
 ## Tech stack
 
 - **Preprocessing:** Python 3, pandas, pyarrow
